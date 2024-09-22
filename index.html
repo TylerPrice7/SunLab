@@ -3,20 +3,34 @@
     <head>
       <title>Sun Lab Access</title>
       <style>
-        .data-filter {
+        .id-filter, .date-filter, .calendar-range {
             padding: 12px 70px;
             font-size: 16px;
             border-radius: 10px;
             border: 2px solid black;
-            background-color: pink;
+            background-color: lightgray;
+            margin: 0;
+            text-align: center;
+        }
+        .id-filter:active, .date-filter:active, .calendar-range:active {
+            background-color: gray;
+            border-color: black;
+        }
+        .calendar-range {
+            width: 250px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
         }
     </style>
     </head>
     <body>
-      <div>
+      <div class="buttons">
         <button class="date-filter">Date</button>
         <button class="id-filter">ID</button>
-        <input type="text" name="datetimes" />
+        <input class="calendar-range" type="text" name="datetimes" />
         <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
@@ -34,6 +48,18 @@
         });
         </script>
       </div>
+      <section>
+      <h1>View History</h1>
+      <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">&nbsp;</th>
+                <th scope="col">ID</th>
+                <th scope="col">Timestamp</th>
+            </tr>
+        </thead>
+      </table>
+      </section>
         <script src="SUN_Lab_Database.js"></script>
     </body>
 </html>
