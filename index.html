@@ -28,9 +28,9 @@
     </head>
     <body>
       <div class="buttons">
-        <button class="date-filter">Date</button>
-        <button class="id-filter">ID</button>
-        <input class="calendar-range" type="text" name="datetimes" />
+        <button class="date-filter" id="date-filter">Date</button>
+        <button class="id-filter" id="id-filter">ID</button>
+        <input class="calendar-range" id="calendar-range" type="text" name="datetimes" />
         <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
@@ -39,10 +39,11 @@
         $(function() {
             $('input[name="datetimes"]').daterangepicker({
                 timePicker: true,
+                timePicker24Hour: true,
                 startDate: moment().startOf('hour'),
                 endDate: moment().startOf('hour').add(32, 'hour'),
                 locale: {
-                    format: 'M/DD hh:mm A'
+                    format: 'M/DD hh:mm'
                 }
             });
         });
@@ -60,6 +61,7 @@
         </thead>
       </table>
       </section>
+        <script src="SUN_Lab.js"></script>
         <script src="SUN_Lab_Database.js"></script>
     </body>
 </html>
