@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <title>Sun Lab Access</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+      <style>
+        .id-filter, .date_filter, .calendar-range {
+            padding: 12px 70px;
+            font-size: 16px;
+            border-radius: 10px;
+            border: 2px solid black;
+            background-color: lightgray;
+            margin: 0;
+            text-align: center;
+        }
+        .id-filter:active, .date_filter:active, .calendar-range:active {
+            background-color: gray;
+            border-color: black;
+        }
+        .calendar-range {
+            width: 250px;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .input-width {
+            width: 1050px;
+        }
+    </style>
+    </head>
+    <body>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+        <script>
+        $(function() {
+          $('input[name="date_times"]').daterangepicker({
+              timePicker: true,
+              timePicker24Hour: true,
+              startDate: moment().startOf('hour'),
+              endDate: moment().startOf('hour').add(32, 'hour'),
+              autoUpdateInput: false,
+              locale: {
+                format: 'YYYY-MM-DD hh:mm'
+              }
+          });
+          $('input[name="date_times"]').on('apply.daterangepicker', function(ev, picker) {
+              $(this).val(picker.startDate.format('YYYY-MM-DD hh:mm') + ' : ' + picker.endDate.format('YYYY-MM-DD hh:mm'));
+          });
+          $('input[name="date_times"]').on('cancel.daterangepicker', function(ev, picker) {
+              $(this).val('');
+          });
+        });
+        </script>
+        <script>
+            $(function() {
+                $('input[name="date_filter"]').daterangepicker({
+                    timePicker: true,
+                    timePicker24Hour: true,
+                    singleDatePicker: true,
+                    autoUpdateInput: false,
+                    locale: {
+                        format: 'YYYY-MM-DD hh:mm'
+                    }
+                });
+                $('input[name="date_filter"]').on('apply.daterangepicker', function(ev, picker) {
+                    $(this).val(picker.startDate.format('YYYY-MM-DD hh:mm'));
+                });
+                $('input[name="date_filter"]').on('cancel.daterangepicker', function(ev, picker) {
+                    $(this).val('');
+                });
+            });
+        </script>
+        <!-- <script>
+        $(function() {
+          $('input[name="date_filter"]').daterangepicker({
+            autoUpdateInput: false,
+            timePicker: true,
+            timePicker24Hour: true,
+            singleDatePicker: true,
+            showDropdowns: true,
+            locale: {
+                format: 'YYYY-MM-DD hh:mm',
+                cancelLabel: 'Clear'
+            }
+          });
+          $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+            });
+
+            $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('');
+            });
+        });
+        </script> -->
+      </div>
+        <h3> &numsp; View Sun Lab History</h3>
+        <form id="searchResults">
+            <div class="form-row align-items-center mb-2 ml-2">
+                <div class="col-auto">
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">ID</div>
+                    </div>
+                  <input type="text" class="form-control input-width" id="id-filter" name="id_filter" maxlength="11" value="<%= id_filter ? id_filter : ' '%>">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row align-items-center mb-2 ml-2">
+              <div class="col-auto">
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">Date</div>
+                  </div>
+                  <input class="form-control d-inline-block input-width" id="date-filter" type="text" name="date_filter" style="width: auto;"  >
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row align-items-center mb-2 ml-2">
+              <div class="col-auto">
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">Date Range</div>
+                  </div>
+                  <input class="form-control d-inline-block input-width" id="calendar-range" type="text" name="date_times" style="width: auto;" value="<%= date_times ? date_times : ' '%>" >
+                </div>
+              </div>
+            </div>
+          <div>
+          <div class="d-flex">
+            <button type="submit" class="btn btn-primary mb-2 ml-2 mr-2">Search</button>
+            <button type="submit" class="btn btn-primary mb-2 mr-2" onclick="clearInput()">Clear</button>
+          </div>
+        </form>
+        <script>
+            function clearInput() {
+                document.getElementById("id-filter").value = '';
+                document.getElementById("date-filter").value = '';
+                document.getElementById("calendar-range").value = '';
+            }
+        </script>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">User ID</th>
+                    <th scope="col">Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (records.length === 0) { %>
+                    <tr>
+                        <td colspan="2">No records found.</td>
+                    </tr>
+                <% } else { %>
+                    <% records.forEach(record => { %>
+                        <tr>
+                            <td><%= record.user_id %></td>
+                            <td><%= record.timestamp %></td>
+                        </tr>
+                    <% }) %>
+                <% } %>
+            </tbody>
+        </table>
+    </body>
+</html>
