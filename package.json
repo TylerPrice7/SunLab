@@ -1,0 +1,15 @@
+{
+  "name": "homework1",
+  "version": "1.0.0",
+  "description": "A simple system to keep track of people that access the Student Unix Network (SUN) Lab",
+  "main": "SUN_Lab.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.0"
+  }
+}
