@@ -5,13 +5,21 @@ const db = new sqlite3.Database('./sqlite.db', (err) => {
     else { console.log("Connected to the database."); }
 });
 
-// // Create ID table
+// Creates record table for ID and timestamps.
 db.run(`CREATE TABLE IF NOT EXISTS RECORDS (
     user_id INTEGER PRIMARY KEY,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
     )`
 );
 
+// Create user table for future implementation.
+db.run(`CREATE TABLE IF NOT EXISTS USERS (
+    user_id PRIMARY KEY,
+    role VARCHAR(20) NOT NULL DEFAULT 'student',
+    )`
+);
+
+// Adds mock values.
 db.serialize(() => {
     db.run(
         `
@@ -70,11 +78,12 @@ db.serialize(() => {
     )
 });
 
+// Deletes from the database any timestamp older than 5 years.
 db.run(
     `DELETE FROM RECORDS WHERE timestamp < DATETIME('now', '-5 years');`
 );
 
-// Close the database connection
+// Closes the database connection
 db.close((err) => {
     if (err) {
         console.error(err.message);
