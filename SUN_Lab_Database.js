@@ -7,16 +7,19 @@ const db = new sqlite3.Database('./sqlite.db', (err) => {
 
 // Creates record table for ID and timestamps.
 db.run(`CREATE TABLE IF NOT EXISTS RECORDS (
-    user_id INTEGER PRIMARY KEY,
-    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-    )`
+    user_id INTEGER,
+    timestamp DATETIME,
+    PRIMARY KEY (user_id, timestamp),
+    FOREIGN KEY (user_id) REFERENCES USERS(user_id) 
+    );`
 );
 
 // Create user table for future implementation.
 db.run(`CREATE TABLE IF NOT EXISTS USERS (
-    user_id PRIMARY KEY,
-    role VARCHAR(20) NOT NULL DEFAULT 'student',
-    )`
+    user_id INTEGER PRIMARY KEY,
+    active INTEGER NOT NULL DEFAULT 1 CHECK (active IN (0, 1)),  
+    role VARCHAR(20) NOT NULL DEFAULT 'student'
+    );`
 );
 
 // Adds mock values.
